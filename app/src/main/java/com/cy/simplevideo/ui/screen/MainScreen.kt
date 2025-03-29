@@ -3,10 +3,17 @@ package com.cy.simplevideo.ui.screen
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import com.cy.simplevideo.data.config.DataSourceConfig
 import com.cy.simplevideo.data.model.VideoItem
@@ -28,6 +35,19 @@ fun MainScreen(
     
     // 记录上一次的数据源
     var lastDataSource by remember { mutableStateOf<DataSourceConfig?>(null) }
+
+    // 键盘控制器
+    val keyboardController = LocalSoftwareKeyboardController.current
+    val focusManager = LocalFocusManager.current
+
+    // 搜索函数
+    val performSearch = {
+        if (searchQuery.isNotBlank()) {
+            viewModel.searchVideos(searchQuery)
+            keyboardController?.hide()
+            focusManager.clearFocus()
+        }
+    }
 
     // 监听数据源变化，只在数据源真正改变时清空搜索结果
     LaunchedEffect(activeDataSource) {
@@ -70,11 +90,20 @@ fun MainScreen(
                 OutlinedTextField(
                     value = searchQuery,
                     onValueChange = { searchQuery = it },
-                    modifier = Modifier.weight(1f),
-                    placeholder = { Text("输入关键词搜索") }
+                    modifier = Modifier
+                        .weight(1f)
+                        .focusRequester(FocusRequester()),
+                    placeholder = { Text("输入关键词搜索") },
+                    keyboardOptions = KeyboardOptions(
+                        imeAction = ImeAction.Search
+                    ),
+                    keyboardActions = KeyboardActions(
+                        onSearch = { performSearch() }
+                    ),
+                    singleLine = true
                 )
                 Button(
-                    onClick = { viewModel.searchVideos(searchQuery) }
+                    onClick = performSearch
                 ) {
                     Text("搜索")
                 }
