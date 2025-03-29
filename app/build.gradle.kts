@@ -81,6 +81,9 @@ dependencies {
     
     // Jsoup for HTML parsing
     implementation(libs.jsoup)
+
+    // Gson
+    implementation("com.google.code.gson:gson:2.12.1")
     
     // GSYVideoPlayer
     implementation("com.github.CarGuo.GSYVideoPlayer:gsyvideoplayer:v10.0.0")
@@ -92,4 +95,17 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+
+    testImplementation("org.mockito:mockito-core:5.3.1")
+    testImplementation("org.mockito.kotlin:mockito-kotlin:5.1.0")
+    testImplementation("org.jetbrains.kotlin:kotlin-test:1.9.0")
+    testImplementation("org.jetbrains.kotlin:kotlin-test-junit:1.9.0")
+    
+    androidTestImplementation("androidx.test.ext:junit:1.1.5")
+    androidTestImplementation("androidx.test:runner:1.5.2")
+    androidTestImplementation("androidx.test:rules:1.5.0")
+    androidTestImplementation("org.jetbrains.kotlin:kotlin-test:1.9.0")
+    
+    // MockWebServer for testing
+    androidTestImplementation("com.squareup.okhttp3:mockwebserver:4.11.0")
 }
