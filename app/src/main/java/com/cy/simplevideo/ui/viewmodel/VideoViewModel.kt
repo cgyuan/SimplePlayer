@@ -70,4 +70,10 @@ class VideoViewModel(private val context: Context) : ViewModel() {
     fun refreshDataSources() {
         repository.refreshDataSources()
     }
+
+    // 清空搜索结果
+    fun clearSearchResults() {
+        _searchResults.value = emptyList()
+        _error.value = null
+    }
 } 

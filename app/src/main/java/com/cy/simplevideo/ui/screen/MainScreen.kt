@@ -26,6 +26,12 @@ fun MainScreen(
     val dataSources by viewModel.dataSources.collectAsState()
     val activeDataSource by viewModel.activeDataSource.collectAsState()
 
+    // 监听数据源变化，清空搜索结果
+    LaunchedEffect(activeDataSource) {
+        searchQuery = ""
+        viewModel.clearSearchResults()
+    }
+
     Scaffold(
         topBar = {
             TopAppBar(
