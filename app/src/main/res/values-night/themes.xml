@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.SimpleVideo" parent="android:Theme.Material.NoActionBar">
+        <!-- 移除固定状态栏颜色，让代码动态控制 -->
+    </style>
+</resources> 

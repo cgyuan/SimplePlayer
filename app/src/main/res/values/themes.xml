@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Theme.SimpleVideo" parent="android:Theme.Material.Light.NoActionBar">
+        <!-- 移除固定状态栏颜色，让代码动态控制 -->
+    </style>
+
+    <style name="MenuItemRadioBtn">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:button">@null</item>
+        <item name="android:textColor">@color/menu_item_single_text_selector</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="ChooseSpeedBtnStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">0dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:button">@null</item>
+        <item name="android:textColor">@color/play_speed_text_selector</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:gravity">center</item>
+    </style>
+</resources>
