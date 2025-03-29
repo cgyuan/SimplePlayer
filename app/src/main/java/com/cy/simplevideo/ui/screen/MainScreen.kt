@@ -8,9 +8,10 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import com.cy.simplevideo.data.config.DataSourceConfig
 import com.cy.simplevideo.data.model.VideoItem
 import com.cy.simplevideo.ui.viewmodel.VideoViewModel
+import com.cy.simplevideo.ui.components.DataSourceSelector
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -22,11 +23,24 @@ fun MainScreen(
     val searchResults by viewModel.searchResults.collectAsState()
     val isLoading by viewModel.isLoading.collectAsState()
     val error by viewModel.error.collectAsState()
+    val dataSources by viewModel.dataSources.collectAsState()
+    val activeDataSource by viewModel.activeDataSource.collectAsState()
 
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("视频搜索") }
+                title = { Text("视频搜索") },
+                actions = {
+                    // 使用新的 DataSourceSelector 组件
+                    DataSourceSelector(
+                        dataSources = dataSources,
+                        activeDataSource = activeDataSource,
+                        onDataSourceSelected = { index ->
+                            viewModel.setActiveDataSource(index)
+                        },
+                        modifier = Modifier.padding(end = 8.dp)
+                    )
+                }
             )
         }
     ) { paddingValues ->

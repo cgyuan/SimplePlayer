@@ -8,7 +8,7 @@
       "className": ".vodplayinfo",
       "searchResultClass": ".xing_vb",
       "categoryClass": ".xing_vb5",
-      "timeClass": "xing_vb7",
+      "timeClass": ".xing_vb7",
       "titleClass": "div.vodh h2",
       "vidImgClass": "div.vodImg img",
       "descClass": ".vodplayinfo",
