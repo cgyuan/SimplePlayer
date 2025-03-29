@@ -12,6 +12,7 @@ import androidx.navigation.compose.rememberNavController
 import com.cy.simplevideo.navigation.NavGraph
 import com.cy.simplevideo.ui.theme.SimpleVideoTheme
 import com.cy.simplevideo.ui.viewmodel.VideoViewModel
+import com.cy.simplevideo.ui.viewmodel.VideoViewModelFactory
 import com.cy.simplevideo.utils.StatusBarUtil
 
 class MainActivity : ComponentActivity() {
@@ -29,7 +30,9 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
                     val navController = rememberNavController()
-                    val viewModel: VideoViewModel = viewModel()
+                    val viewModel: VideoViewModel = viewModel(
+                        factory = VideoViewModelFactory(this)
+                    )
                     
                     NavGraph(
                         navController = navController,

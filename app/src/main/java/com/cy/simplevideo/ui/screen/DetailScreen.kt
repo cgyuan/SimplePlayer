@@ -142,7 +142,7 @@ private fun EpisodeItem(episode: Episode, onClick: () -> Unit = {}) {
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                text = "第${episode.number}集",
+                text = episode.number,
                 style = MaterialTheme.typography.bodyLarge
             )
             Icon(Icons.Default.PlayArrow, contentDescription = "播放")

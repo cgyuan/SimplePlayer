@@ -7,7 +7,6 @@ import com.cy.simplevideo.data.model.VideoDetail
 import com.cy.simplevideo.data.model.VideoItem
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
-import org.jsoup.nodes.Element
 
 class ConfigurableHtmlParser(private val config: DataSourceConfig) {
     
@@ -19,7 +18,7 @@ class ConfigurableHtmlParser(private val config: DataSourceConfig) {
         
         try {
             // Use config.searchResultClass to find video elements
-            val container = doc.select(".${config.searchResultClass}")
+            val container = doc.select("${config.searchResultClass}")
             
             if (container.isEmpty()) {
                 Log.e(TAG, "Container with class ${config.searchResultClass} not found")
@@ -39,14 +38,18 @@ class ConfigurableHtmlParser(private val config: DataSourceConfig) {
                 
                 // Extract video information based on the site structure
                 val titleElement = element.select("a").firstOrNull()
-                val categoryElement = element.select(".${config.categoryClass}").firstOrNull()
-                val updateTimeElement = element.select(".${config.timeClass}").firstOrNull()
+                val categoryElement = element.select("${config.categoryClass}").firstOrNull()
+                val updateTimeElement = element.select("${config.timeClass}").firstOrNull()
                 
-                if (titleElement != null) {
+                if (titleElement != null && updateTimeElement != null) {
                     val title = titleElement.text()
-                    val url = titleElement.attr("href")
+                    var url = titleElement.attr("href")
+
+                    if (url.startsWith('/')) {
+                        url = config.baseUrl + url
+                    }
                     val category = categoryElement?.text() ?: ""
-                    val updateTime = updateTimeElement?.text() ?: ""
+                    val updateTime = updateTimeElement.text() ?: ""
                     
                     videoList.add(
                         VideoItem(
@@ -86,8 +89,18 @@ class ConfigurableHtmlParser(private val config: DataSourceConfig) {
 
             // Get episode list
             val episodes = doc.select("${config.className} li").map { element ->
-                val number = element.select("span").text().split("$")[0]
-                val url = element.select("input[type=checkbox]").attr("value")
+                var number = element.select("span").text().split("$")[0]
+                var url = element.select("input[type=checkbox]").attr("value")
+                if (!url.startsWith("http")) {
+                    kotlin.runCatching {
+                        val (a, b) = url.split("$")
+                        if (number.isEmpty()) {
+                            number = a
+                        }
+                        url = b
+                    }
+                }
+                println("number: $number, url: $url")
                 Episode(number, url)
             }.filter {
                 it.url.isNotEmpty()
