@@ -25,11 +25,17 @@ fun MainScreen(
     val error by viewModel.error.collectAsState()
     val dataSources by viewModel.dataSources.collectAsState()
     val activeDataSource by viewModel.activeDataSource.collectAsState()
+    
+    // 记录上一次的数据源
+    var lastDataSource by remember { mutableStateOf<DataSourceConfig?>(null) }
 
-    // 监听数据源变化，清空搜索结果
+    // 监听数据源变化，只在数据源真正改变时清空搜索结果
     LaunchedEffect(activeDataSource) {
-        searchQuery = ""
-        viewModel.clearSearchResults()
+        if (lastDataSource != null && lastDataSource != activeDataSource) {
+            searchQuery = ""
+            viewModel.clearSearchResults()
+        }
+        lastDataSource = activeDataSource
     }
 
     Scaffold(

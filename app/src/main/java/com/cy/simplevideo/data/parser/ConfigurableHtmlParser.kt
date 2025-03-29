@@ -73,7 +73,11 @@ class ConfigurableHtmlParser(private val config: DataSourceConfig) {
         
         try {
             // Get title
-            val title = doc.select(config.titleClass!!).text()
+            var title = doc.select(config.titleClass!!).text()
+
+            if (title.startsWith("片名")) {
+                title = title.split("：")[1]
+            }
             
             // Get cover image URL
             var coverUrl = doc.select(config.vidImgClass!!).attr("src")
@@ -84,8 +88,6 @@ class ConfigurableHtmlParser(private val config: DataSourceConfig) {
             
             // Get description using config class name
             val description = doc.select(config.descClass!!).firstOrNull()?.text() ?: ""
-
-//            println( doc.select(".playlist.wbox").html())
 
             // Get episode list
             val episodes = doc.select("${config.className} li").map { element ->
