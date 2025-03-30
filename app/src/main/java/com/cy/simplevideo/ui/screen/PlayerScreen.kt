@@ -108,7 +108,7 @@ fun PlayerScreen(
         val observer = LifecycleEventObserver { _, event ->
             when (event) {
                 Lifecycle.Event.ON_PAUSE -> {
-                    playerRef.value?.onVideoPause()
+                    playerRef.value?.switchToBackground()
                 }
                 Lifecycle.Event.ON_RESUME -> {
                     playerRef.value?.onVideoResume(false)

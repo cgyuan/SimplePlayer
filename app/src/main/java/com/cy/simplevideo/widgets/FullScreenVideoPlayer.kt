@@ -191,4 +191,15 @@ class FullScreenVideoPlayer : StandardGSYVideoPlayer {
         context.unregisterReceiver(receiver)
     }
 
+    override fun onVideoPause() {
+        super.onVideoPause()
+    }
+
+    fun switchToBackground() {
+        if(binding.menu.playBackgroundBtn.isSelected){
+            return
+        }
+        super.onVideoPause()
+    }
+
 }

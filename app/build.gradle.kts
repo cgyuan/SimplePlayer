@@ -87,7 +87,8 @@ dependencies {
     
     // GSYVideoPlayer
     implementation("com.github.CarGuo.GSYVideoPlayer:gsyvideoplayer:v10.0.0")
-    
+    implementation(libs.androidx.appcompat)
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -105,7 +106,7 @@ dependencies {
     androidTestImplementation("androidx.test:runner:1.5.2")
     androidTestImplementation("androidx.test:rules:1.5.0")
     androidTestImplementation("org.jetbrains.kotlin:kotlin-test:1.9.0")
-    
+
     // MockWebServer for testing
     androidTestImplementation("com.squareup.okhttp3:mockwebserver:4.11.0")
 }
