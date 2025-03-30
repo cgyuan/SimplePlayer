@@ -17,17 +17,19 @@ import com.cy.simplevideo.utils.visible
 import com.shuyu.gsyvideoplayer.utils.GSYVideoType
 import com.shuyu.gsyvideoplayer.video.StandardGSYVideoPlayer
 import com.shuyu.gsyvideoplayer.video.base.GSYVideoView
+import java.text.SimpleDateFormat
+import java.util.Date
 
 class FullScreenVideoPlayer : StandardGSYVideoPlayer {
 
     companion object {
         private const val TAG = "DetailVideoPlayer"
+        private val timeFormat = SimpleDateFormat("HH:mm")
     }
 
     private lateinit var receiver: TimeBatteryReceiver
     private lateinit var showMenuAnim: Animation
     private lateinit var hideMenuAnim: Animation
-    private var playIndex = 0
 
     //是否是第一次加载视频，第一次加载时隐藏底部进度条和播放按钮
     private var isFirstLoad = true
@@ -99,8 +101,25 @@ class FullScreenVideoPlayer : StandardGSYVideoPlayer {
             }
         }
 
+        post {
+            upTime()
+        }
+
+        receiver.setOnTimeUpdateListener {
+            upTime()
+        }
+        receiver.setOnBatteryChangedListener { level ->
+            setBatteryLevel(level)
+        }
     }
 
+    private fun upTime() {
+        binding.sysTime.text = timeFormat.format(Date(System.currentTimeMillis()))
+    }
+
+    private fun setBatteryLevel(level: Int) {
+        binding.ivBattery.setImageLevel(level)
+    }
 
     override fun onClickUiToggle(e: MotionEvent?) {
         if (binding.menu.root.isShown) {
@@ -175,8 +194,6 @@ class FullScreenVideoPlayer : StandardGSYVideoPlayer {
     override fun changeUiToError() {
         super.changeUiToError()
     }
-
-
 
     override fun touchSurfaceMove(deltaX: Float, deltaY: Float, y: Float) {
         if (binding.menu.root.isShown || binding.speedList.root.isShown

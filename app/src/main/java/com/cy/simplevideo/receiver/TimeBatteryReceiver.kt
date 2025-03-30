@@ -22,14 +22,25 @@ class TimeBatteryReceiver : BroadcastReceiver() {
 
     }
 
+    private var onTimeUpdate: (() -> Unit)? = null
+    private var onBatteryChanged: ((Int) -> Unit)? = null
+
+    fun setOnTimeUpdateListener(listener: () -> Unit) {
+        onTimeUpdate = listener
+    }
+
+    fun setOnBatteryChangedListener(listener: (Int) -> Unit) {
+        onBatteryChanged = listener
+    }
+
     override fun onReceive(context: Context?, intent: Intent?) {
         when (intent?.action) {
             Intent.ACTION_TIME_TICK -> {
-                // TODO
+                onTimeUpdate?.invoke()
             }
             Intent.ACTION_BATTERY_CHANGED -> {
                 val level = intent.getIntExtra(BatteryManager.EXTRA_LEVEL, -1)
-                // TODO
+                onBatteryChanged?.invoke(level)
             }
         }
     }

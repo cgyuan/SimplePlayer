@@ -67,7 +67,8 @@
             android:layout_height="24dp"
             android:layout_gravity="center_vertical"
             android:layout_marginRight="20dp"
-            android:background="@drawable/dlan_pic" />
+            android:background="@drawable/dlan_pic"
+            android:visibility="gone"/>
 
         <ImageView
             android:id="@+id/iv_battery"
