@@ -10,6 +10,7 @@ import com.cy.simplevideo.data.parser.ConfigurableHtmlParser
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.withContext
+import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.RequestBody.Companion.toRequestBody
@@ -42,13 +43,16 @@ class VideoRepository(private val context: Context) {
         
         try {
             val encodedKeyword = URLEncoder.encode(keyword, StandardCharsets.UTF_8.toString())
-            val url = config.url + encodedKeyword
+            val url = if (config.isPost) config.url else config.url + encodedKeyword
             
             val responseBody = if (config.isPost) {
-                // POST request
+                // POST request with payload
+                val postData = config.postData?.replace("{search_value}", encodedKeyword)
+                    ?: "{\"wd\": \"$encodedKeyword\"}"
+                
                 val request = Request.Builder()
                     .url(url)
-                    .post("".toRequestBody())
+                    .post(postData.toRequestBody("application/json".toMediaType()))
                     .build()
                 
                 client.newCall(request).execute().body?.string()

@@ -94,7 +94,9 @@ class FullScreenVideoPlayer : StandardGSYVideoPlayer {
                 (binding.menu.screenAspectGroup.findViewById<View>(checkedId).tag as String).toInt()
             GSYVideoType.setShowType(aspect)
             changeTextureViewShowType()
-            mTextureView.requestLayout()
+            if (mTextureView != null) {
+                mTextureView.requestLayout()
+            }
         }
 
     }

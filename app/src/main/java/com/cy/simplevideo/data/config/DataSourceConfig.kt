@@ -13,5 +13,6 @@ data class DataSourceConfig(
     val titleClass: String? = null,
     val vidImgClass: String? = null,
     val descClass: String? = null,
-    val searchInputClassName: String
+    val searchInputClassName: String,
+    val postData: String? = null
 )

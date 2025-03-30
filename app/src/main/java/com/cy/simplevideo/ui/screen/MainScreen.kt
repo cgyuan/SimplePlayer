@@ -52,7 +52,7 @@ fun MainScreen(
     // 监听数据源变化，只在数据源真正改变时清空搜索结果
     LaunchedEffect(activeDataSource) {
         if (lastDataSource != null && lastDataSource != activeDataSource) {
-            searchQuery = ""
+//            searchQuery = ""
             viewModel.clearSearchResults()
         }
         lastDataSource = activeDataSource
