@@ -5,14 +5,21 @@ import android.util.Log
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.WindowManager
 import android.widget.FrameLayout
-import androidx.compose.foundation.layout.*
-import androidx.compose.runtime.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
+import com.cy.simplevideo.utils.StatusBarUtil
 import com.cy.simplevideo.widgets.FullScreenVideoPlayer
 import com.shuyu.gsyvideoplayer.GSYVideoManager
 import com.shuyu.gsyvideoplayer.builder.GSYVideoOptionBuilder
@@ -20,7 +27,6 @@ import com.shuyu.gsyvideoplayer.listener.GSYSampleCallBack
 import com.shuyu.gsyvideoplayer.player.PlayerFactory
 import com.shuyu.gsyvideoplayer.utils.OrientationUtils
 import tv.danmaku.ijk.media.exo2.Exo2PlayerManager
-import com.cy.simplevideo.utils.StatusBarUtil
 
 @Composable
 fun PlayerScreen(
@@ -50,7 +56,7 @@ fun PlayerScreen(
     
     // 设置为横屏模式
     LaunchedEffect(Unit) {
-        activity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
+        activity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE
     }
     
     Box(modifier = Modifier.fillMaxSize()) {
@@ -81,7 +87,7 @@ fun PlayerScreen(
                             orientationUtils.isEnable = true
                         }
                     })
-                    
+
                     // 设置播放器配置
                     GSYVideoOptionBuilder()
                         .setIsTouchWiget(true)

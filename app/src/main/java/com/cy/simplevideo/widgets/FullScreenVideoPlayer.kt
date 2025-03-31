@@ -1,6 +1,8 @@
 package com.cy.simplevideo.widgets
 
+import android.annotation.SuppressLint
 import android.content.Context
+import android.content.pm.ActivityInfo
 import android.graphics.Matrix
 import android.util.AttributeSet
 import android.view.LayoutInflater
@@ -53,6 +55,7 @@ class FullScreenVideoPlayer : StandardGSYVideoPlayer {
         dismissControlTime = 5000
     }
 
+    @SuppressLint("SourceLockedOrientationActivity")
     override fun init(context: Context?) {
         super.init(context)
         receiver = TimeBatteryReceiver.register(context!!)
@@ -98,6 +101,19 @@ class FullScreenVideoPlayer : StandardGSYVideoPlayer {
             changeTextureViewShowType()
             if (mTextureView != null) {
                 mTextureView.requestLayout()
+            }
+        }
+
+        binding.screenRotate.setOnClickListener {
+            val activity = context as androidx.activity.ComponentActivity
+            if (activity.requestedOrientation != ActivityInfo.SCREEN_ORIENTATION_PORTRAIT) {
+                // 如果当前是横屏，切换到竖屏
+                activity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+                binding.settingMore.gone()
+            } else {
+                // 如果当前是竖屏，切换到横屏
+                activity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE
+                binding.settingMore.visible(true)
             }
         }
 
@@ -213,7 +229,7 @@ class FullScreenVideoPlayer : StandardGSYVideoPlayer {
     }
 
     fun switchToBackground() {
-        if(binding.menu.playBackgroundBtn.isSelected){
+        if(canPlayBackground){
             return
         }
         super.onVideoPause()
