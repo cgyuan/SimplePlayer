@@ -11,6 +11,7 @@ import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.ImageView
+import android.widget.SeekBar
 import com.cy.simplevideo.R
 import com.cy.simplevideo.databinding.LayoutDetailVideoPlayerBinding
 import com.cy.simplevideo.receiver.TimeBatteryReceiver
@@ -233,6 +234,28 @@ class FullScreenVideoPlayer : StandardGSYVideoPlayer {
             return
         }
         super.onVideoPause()
+    }
+
+    override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+        super.onProgressChanged(seekBar, progress, fromUser)
+        
+        // 计算当前时间（毫秒）
+        val duration = duration
+        val currentPosition = progress * duration / 100
+        
+        // 转换为时分秒格式
+        val hours = currentPosition / 3600000
+        val minutes = (currentPosition % 3600000) / 60000
+        val seconds = (currentPosition % 60000) / 1000
+        
+        // 格式化时间字符串
+        val timeStr = if (hours > 0) {
+            String.format("%02d:%02d:%02d", hours, minutes, seconds)
+        } else {
+            String.format("%02d:%02d", minutes, seconds)
+        }
+        
+        binding.current.text = timeStr
     }
 
 }
