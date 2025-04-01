@@ -11,6 +11,8 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     env:
       SIGNING_STORE_PASSWORD: "123456"
       SIGNING_KEY_ALIAS: "release"
@@ -53,4 +55,6 @@ jobs:
           
           自动构建发布
         draft: false
-        prerelease: false 
+        prerelease: false
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
