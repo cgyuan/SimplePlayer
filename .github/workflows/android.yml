@@ -9,6 +9,10 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      SIGNING_STORE_PASSWORD: "123456"
+      SIGNING_KEY_ALIAS: "release"
+      SIGNING_KEY_PASSWORD: "123456"
 
     steps:
     - uses: actions/checkout@v4
@@ -28,10 +32,6 @@ jobs:
 
     - name: Build Release APK
       run: ./gradlew assembleRelease
-      env:
-        SIGNING_KEY_ALIAS: "release"
-        SIGNING_KEY_PASSWORD: "123456"
-        SIGNING_STORE_PASSWORD: "123456"
 
     - name: Upload Release APK
       uses: actions/upload-artifact@v4
