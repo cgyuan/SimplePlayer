@@ -19,6 +19,8 @@ import com.cy.simplevideo.data.config.DataSourceConfig
 import com.cy.simplevideo.data.model.VideoItem
 import com.cy.simplevideo.ui.viewmodel.VideoViewModel
 import com.cy.simplevideo.ui.components.DataSourceSelector
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Clear
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -100,7 +102,17 @@ fun MainScreen(
                     keyboardActions = KeyboardActions(
                         onSearch = { performSearch() }
                     ),
-                    singleLine = true
+                    singleLine = true,
+                    trailingIcon = {
+                        if (searchQuery.isNotEmpty()) {
+                            IconButton(onClick = { searchQuery = "" }) {
+                                Icon(
+                                    imageVector = Icons.Default.Clear,
+                                    contentDescription = "Clear search"
+                                )
+                            }
+                        }
+                    }
                 )
                 Button(
                     onClick = performSearch

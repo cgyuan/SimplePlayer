@@ -1,5 +1,19 @@
 [
   {
+    "baseUrl": "https://www.ryzy3.tv",
+    "url": "https://www.ryzy3.tv/index.php/vod/search.html?wd=",
+    "active": true,
+    "remark": "如意",
+    "className": ".playlist.wbox.rym3u8 > li:not(:last-of-type)",
+    "searchResultClass": ".videoContent li",
+    "categoryClass": ".category.type",
+    "timeClass": ".time1",
+    "titleClass": "div.right > p:nth-child(1)",
+    "vidImgClass": "div.left img",
+    "descClass": "#content > div",
+    "searchInputClassName": "search-input"
+  },
+  {
     "baseUrl": "https://huaweiba.live",
     "url": "https://huaweiba.live/index.php/vod/search.html?wd=",
     "active": false,
@@ -63,7 +77,7 @@
   {
     "baseUrl": "https://haohuazy.com",
     "url": "https://haohuazy.com/index.php/vod/search.html?wd=",
-    "active": true,
+    "active": false,
     "isPost": false,
     "remark": "豪华",
     "className": ".vod-list ~ .vod-list .list-item",

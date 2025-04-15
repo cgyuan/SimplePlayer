@@ -83,6 +83,9 @@ class FullScreenVideoPlayer : StandardGSYVideoPlayer {
         }
 
         binding.menu.mirrorFlipBtn.setOnClickListener {
+            if (mTextureView == null) {
+                return@setOnClickListener
+            }
             it.isSelected = it.isSelected.not()
             val xScale = if (it.isSelected) {
                 -1F

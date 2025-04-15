@@ -26,6 +26,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.cy.simplevideo.data.config.DataSourceConfig
 
 @Composable
@@ -64,8 +65,12 @@ fun DataSourceSelector(
                     ) {
                         Text(
                             text = activeDataSource?.remark?.firstOrNull()?.toString() ?: "?",
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = MaterialTheme.colorScheme.onPrimaryContainer
+                            fontSize = 12.sp,
+                            style = MaterialTheme.typography.bodyMedium.copy(
+                                lineHeight = 12.sp
+                            ),
+                            color = MaterialTheme.colorScheme.onPrimaryContainer,
+                            modifier = Modifier.align(Alignment.Center)
                         )
                     }
                 }
@@ -123,7 +128,10 @@ fun DataSourceSelector(
                                     ) {
                                         Text(
                                             text = source.remark.firstOrNull().toString(),
-                                            style = MaterialTheme.typography.bodyMedium,
+                                            fontSize = 12.sp,
+                                            style = MaterialTheme.typography.bodyMedium.copy(
+                                                lineHeight = 12.sp
+                                            ),
                                             color = if (isSelected)
                                                 MaterialTheme.colorScheme.onPrimaryContainer
                                             else
