@@ -97,6 +97,7 @@ dependencies {
     
     // GSYVideoPlayer
     implementation("com.github.CarGuo.GSYVideoPlayer:gsyvideoplayer:v10.0.0")
+
     implementation(libs.androidx.appcompat)
 
     testImplementation(libs.junit)

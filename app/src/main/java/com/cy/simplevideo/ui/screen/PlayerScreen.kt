@@ -7,12 +7,7 @@ import android.view.WindowManager
 import android.widget.FrameLayout
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.SideEffect
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
@@ -20,6 +15,7 @@ import androidx.compose.ui.viewinterop.AndroidView
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import com.cy.simplevideo.utils.StatusBarUtil
+import com.cy.simplevideo.widgets.AdFilteringVideoPlayer
 import com.cy.simplevideo.widgets.FullScreenVideoPlayer
 import com.shuyu.gsyvideoplayer.GSYVideoManager
 import com.shuyu.gsyvideoplayer.builder.GSYVideoOptionBuilder
@@ -62,7 +58,7 @@ fun PlayerScreen(
     Box(modifier = Modifier.fillMaxSize()) {
         AndroidView(
             factory = { context ->
-                FullScreenVideoPlayer(context).apply {
+                AdFilteringVideoPlayer(context).apply {
                     layoutParams = FrameLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT)
                     
                     // 保存播放器实例

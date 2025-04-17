@@ -23,7 +23,7 @@ import com.shuyu.gsyvideoplayer.video.base.GSYVideoView
 import java.text.SimpleDateFormat
 import java.util.Date
 
-class FullScreenVideoPlayer : StandardGSYVideoPlayer {
+open class FullScreenVideoPlayer : StandardGSYVideoPlayer {
 
     companion object {
         private const val TAG = "DetailVideoPlayer"
