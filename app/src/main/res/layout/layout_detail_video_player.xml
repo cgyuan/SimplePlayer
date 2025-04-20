@@ -228,4 +228,12 @@
     <include android:id="@+id/ep_list"
         layout="@layout/player_choose_ep"/>
 
+    <include android:id="@+id/speed_indicator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20sp"
+        android:visibility="gone"
+        layout="@layout/speed_indicator_layout"/>
+
 </RelativeLayout>

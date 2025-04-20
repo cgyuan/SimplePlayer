@@ -37,6 +37,15 @@ open class FullScreenVideoPlayer : StandardGSYVideoPlayer {
     //是否是第一次加载视频，第一次加载时隐藏底部进度条和播放按钮
     private var isFirstLoad = true
 
+    private var isLongPressSpeedUp = false
+    private var normalSpeed = 1.0f
+    private val longPressSpeed = 3.0f
+    private var longPressRunnable: Runnable? = null
+    private var lastX = 0f
+    private var lastY = 0f
+    private val touchSlop = 10 // 触摸阈值，用于判断是否触发其他手势
+    private var arrowAnimators = mutableListOf<android.animation.ObjectAnimator>()
+
     constructor(context: Context, fullFlag: Boolean) : super(context, fullFlag)
 
     constructor(context: Context) : super(context)
@@ -54,6 +63,13 @@ open class FullScreenVideoPlayer : StandardGSYVideoPlayer {
 
     init {
         dismissControlTime = 5000
+        longPressRunnable = Runnable {
+            if (!isLongPressSpeedUp) {
+                isLongPressSpeedUp = true
+                speed = longPressSpeed
+                showSpeedIndicator()
+            }
+        }
     }
 
     @SuppressLint("SourceLockedOrientationActivity")
@@ -76,6 +92,7 @@ open class FullScreenVideoPlayer : StandardGSYVideoPlayer {
         binding.speedList.speedGroup.setOnCheckedChangeListener { _, checkedId ->
             speed =
                 (binding.speedList.speedGroup.findViewById<View>(checkedId).tag as String).toFloat()
+            normalSpeed = speed
         }
 
         binding.menu.playBackgroundBtn.setOnClickListener {
@@ -217,7 +234,7 @@ open class FullScreenVideoPlayer : StandardGSYVideoPlayer {
 
     override fun touchSurfaceMove(deltaX: Float, deltaY: Float, y: Float) {
         if (binding.menu.root.isShown || binding.speedList.root.isShown
-            || binding.epList.root.isShown
+            || binding.epList.root.isShown || isLongPressSpeedUp
         ) {
             return
         }
@@ -259,6 +276,84 @@ open class FullScreenVideoPlayer : StandardGSYVideoPlayer {
         }
         
         binding.current.text = timeStr
+    }
+
+    private fun showSpeedIndicator() {
+        binding.speedIndicator.root.visible()
+        
+        // 清除之前的动画
+        arrowAnimators.forEach { it.cancel() }
+        arrowAnimators.clear()
+
+        // 为每个箭头创建动画
+        val arrows = listOf(
+            binding.speedIndicator.arrow1,
+            binding.speedIndicator.arrow2,
+            binding.speedIndicator.arrow3
+        )
+
+        arrows.forEachIndexed { index, arrow ->
+            // 创建透明度动画
+            val alphaAnimator = android.animation.ObjectAnimator.ofFloat(arrow, "alpha", 0.3f, 1f)
+            alphaAnimator.duration = 300
+            alphaAnimator.repeatCount = android.animation.ObjectAnimator.INFINITE
+            alphaAnimator.repeatMode = android.animation.ObjectAnimator.REVERSE
+            alphaAnimator.startDelay = (index * 100).toLong()
+            
+            // 创建位移动画
+            val translateAnimator = android.animation.ObjectAnimator.ofFloat(arrow, "translationX", -10f, 0f)
+            translateAnimator.duration = 300
+            translateAnimator.repeatCount = android.animation.ObjectAnimator.INFINITE
+            translateAnimator.repeatMode = android.animation.ObjectAnimator.REVERSE
+            translateAnimator.startDelay = (index * 100).toLong()
+            
+            alphaAnimator.start()
+            translateAnimator.start()
+            
+            arrowAnimators.add(alphaAnimator)
+            arrowAnimators.add(translateAnimator)
+        }
+    }
+
+    private fun hideSpeedIndicator() {
+        binding.speedIndicator.root.gone()
+        arrowAnimators.forEach { it.cancel() }
+        arrowAnimators.clear()
+    }
+
+    override fun dispatchTouchEvent(event: MotionEvent): Boolean {
+        when (event.action) {
+            MotionEvent.ACTION_DOWN -> {
+                lastX = event.x
+                lastY = event.y
+                if (mCurrentState == CURRENT_STATE_PLAYING) {
+                    postDelayed(longPressRunnable, 500) // 500ms 长按触发
+                }
+            }
+            MotionEvent.ACTION_MOVE -> {
+                if (isLongPressSpeedUp) {
+                    // 在长按加速状态下，直接返回true，阻止其他手势
+                    return true
+                } else {
+                    // 检测是否触发其他手势
+                    val dx = Math.abs(event.x - lastX)
+                    val dy = Math.abs(event.y - lastY)
+                    if (dx > touchSlop || dy > touchSlop) {
+                        // 如果移动距离超过阈值，取消长按检测
+                        removeCallbacks(longPressRunnable)
+                    }
+                }
+            }
+            MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
+                removeCallbacks(longPressRunnable)
+                if (isLongPressSpeedUp) {
+                    isLongPressSpeedUp = false
+                    speed = normalSpeed
+                    hideSpeedIndicator()
+                }
+            }
+        }
+        return super.dispatchTouchEvent(event)
     }
 
 }
